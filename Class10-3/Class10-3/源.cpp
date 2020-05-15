@@ -7,21 +7,19 @@ using namespace std;
 
 int main()
 {
-	Mat srcMat = imread("C:\\picture\\gtest.JPG", 0);
-	float gamma = 0.45;
-	float Lut[256];
-	for (int i = 0; i < 255; i++)
-	{
-		Lut[i] = pow(i * 1.0 / 255, gamma);
-	}
-	for (int i = 0; i < srcMat.rows; i++)
-	{
-		for (int j = 0; j < srcMat.cols; j++)
-		{
-			srcMat.at<uchar>(i, j) = Lut[srcMat.at<uchar>(i, j)] * 255;
-		}
-	}
-	imshow("img", srcMat);
+	Mat srcMat = imread("C:\\picture\\gtest.JPG", 1);
+	Mat dstMat;
+	Mat srcMat1[3];
+
+	Mat channel[3];
+	split(srcMat, channel);
+
+	equalizeHist(channel[0], srcMat1[0]);
+	equalizeHist(channel[1], srcMat1[1]);
+	equalizeHist(channel[2], srcMat1[2]);
+
+	merge(srcMat1, 3, dstMat);
+	imshow("img", dstMat);
 	waitKey(0);
 	return 0;
 }
